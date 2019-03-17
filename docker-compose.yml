@@ -1,0 +1,7 @@
+version: "2"
+services:
+  spring-social:
+    container_name: spring-social
+    image: nadjim/spring-social
+    ports:
+      - "8060:8060"
