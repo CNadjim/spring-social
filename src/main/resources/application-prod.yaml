@@ -23,3 +23,44 @@ spring:
       settings:
         trace: false
         web-allow-others: false
+
+  security:
+    oauth2:
+      client:
+        registration:
+          github:
+            clientId: Iv1.22f4aa6e3a5e86e3
+            clientSecret: 3efe8a76a2f55b7f6de968db7f4450f3d41c847c
+            redirectUriTemplate: "{baseUrl}/oauth2/callback/{registrationId}"
+            scope:
+              - user
+              - user:email
+              - read:user
+          facebook:
+            clientId: 360218771245694
+            clientSecret: 6583919fb824ed6d737791a24e87dbfb
+            redirectUriTemplate: "{baseUrl}/oauth2/callback/{registrationId}"
+            scope:
+              - email
+              - public_profile
+          google:
+            clientId: 517108479410-q7ejk58t2oaq4n2dpjcav8a7ehn1ljka.apps.googleusercontent.com
+            clientSecret: XR7k8ualrsX2joZiEagoeVGD
+            redirectUriTemplate: "{baseUrl}/oauth2/callback/{registrationId}"
+            scope:
+              - email
+              - profile
+          linkedin:
+            clientId: 77egyay9ytt01b
+            clientSecret: gzOsf5LV44tJNCq0
+            redirectUriTemplate: "{baseUrl}/oauth2/callback/{registrationId}"
+            client-authentication-method: post
+            authorization-grant-type: authorization_code
+            scope: r_liteprofile, r_emailaddress
+            client-name: Linkedin
+        provider:
+          linkedin:
+            authorization-uri: https://www.linkedin.com/oauth/v2/authorization
+            token-uri: https://www.linkedin.com/oauth/v2/accessToken
+            user-info-uri: https://api.linkedin.com/v2/me
+            user-name-attribute: id
