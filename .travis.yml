@@ -1,5 +1,8 @@
 sudo: required
 
+notifications:
+  email: false
+
 services:
   - docker
 
@@ -24,4 +27,4 @@ after_success:
   - docker build -t $IMAGE_NAME .
   - docker tag $IMAGE_NAME $DOCKER_USER/$IMAGE_NAME
   - docker push $DOCKER_USER/$IMAGE_NAME
-  - sshpass -p $DEPLOY_PASS ssh -o stricthostkeychecking=no $DEPLOY_USER@$DEPLOY_HOST bash /$IMAGE_NAME/deploy.sh
+  - sshpass -p $DEPLOY_PASS ssh -o stricthostkeychecking=no $DEPLOY_USER@$DEPLOY_HOST bash /$IMAGE_NAME/start.sh
