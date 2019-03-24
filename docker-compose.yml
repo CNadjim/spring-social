@@ -11,3 +11,6 @@ services:
       - "traefik.enable=true"
       - "traefik.frontend.rule=Host:api.spring-social.ovh"
       - "traefik.port=8060"
+networks:
+  social:
+    external: true
