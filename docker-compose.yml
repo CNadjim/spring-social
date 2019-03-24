@@ -3,6 +3,9 @@ services:
   spring-social:
     container_name: spring-social
     image: nadjim/spring-social
+    networks:
+      - social
+      - default
     ports:
       - "8060:8060"
     labels:
