@@ -1,6 +1,5 @@
 server:
   port : 8060
-  use-forward-headers: true
 spring:
   datasource:
     url: jdbc:h2:file:./database/h2-database;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE
@@ -32,6 +31,7 @@ spring:
           github:
             clientId: Iv1.22f4aa6e3a5e86e3
             clientSecret: 3efe8a76a2f55b7f6de968db7f4450f3d41c847c
+            redirectUriTemplate: "https://api.spring-social.ovh/oauth2/callback/{registrationId}"
             scope:
               - user
               - user:email
@@ -39,18 +39,21 @@ spring:
           facebook:
             clientId: 360218771245694
             clientSecret: 6583919fb824ed6d737791a24e87dbfb
+            redirectUriTemplate: "https://api.spring-social.ovh/oauth2/callback/{registrationId}"
             scope:
               - email
               - public_profile
           google:
             clientId: 517108479410-q7ejk58t2oaq4n2dpjcav8a7ehn1ljka.apps.googleusercontent.com
             clientSecret: XR7k8ualrsX2joZiEagoeVGD
+            redirectUriTemplate: "https://api.spring-social.ovh/oauth2/callback/{registrationId}"
             scope:
               - email
               - profile
           linkedin:
             clientId: 77egyay9ytt01b
             clientSecret: gzOsf5LV44tJNCq0
+            redirectUriTemplate: "https://api.spring-social.ovh/oauth2/callback/{registrationId}"
             client-authentication-method: post
             authorization-grant-type: authorization_code
             scope: r_liteprofile, r_emailaddress
