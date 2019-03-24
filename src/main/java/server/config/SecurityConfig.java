@@ -1,9 +1,12 @@
 package server.config;
 
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.converter.FormHttpMessageConverter;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.BeanIds;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
@@ -14,7 +17,13 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.oauth2.client.endpoint.DefaultAuthorizationCodeTokenResponseClient;
+import org.springframework.security.oauth2.client.endpoint.OAuth2AccessTokenResponseClient;
+import org.springframework.security.oauth2.client.endpoint.OAuth2AuthorizationCodeGrantRequest;
+import org.springframework.security.oauth2.client.http.OAuth2ErrorResponseErrorHandler;
+import org.springframework.security.oauth2.core.http.converter.OAuth2AccessTokenResponseHttpMessageConverter;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.web.client.RestTemplate;
 import server.security.repository.HttpCookieOAuth2AuthorizationRequestRepository;
 import server.security.rest.OAuth2AuthenticationFailureHandler;
 import server.security.rest.OAuth2AuthenticationSuccessHandler;
@@ -22,6 +31,8 @@ import server.security.rest.RestAuthenticationEntryPoint;
 import server.security.rest.TokenAuthenticationFilter;
 import server.security.service.CustomOAuth2UserService;
 import server.service.CustomUserDetailsService;
+
+import java.util.Arrays;
 
 @Configuration
 @EnableWebSecurity
@@ -31,6 +42,8 @@ import server.service.CustomUserDetailsService;
         prePostEnabled = true
 )
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
+
+    private static final Logger logger = LoggerFactory.getLogger(SecurityConfig.class);
 
     @Autowired
     private CustomUserDetailsService customUserDetailsService;
@@ -125,6 +138,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .authenticated()
                 .and()
                 .oauth2Login()
+                .tokenEndpoint()
+                .accessTokenResponseClient(authorizationCodeTokenResponseClient())
+                .and()
                 .authorizationEndpoint()
                 .baseUri("/oauth2/authorize")
                 .authorizationRequestRepository(cookieAuthorizationRequestRepository())
@@ -143,5 +159,24 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         // Add our custom Token based authentication filter
         http.addFilterBefore(tokenAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class);
     }
+
+    private OAuth2AccessTokenResponseClient<OAuth2AuthorizationCodeGrantRequest> authorizationCodeTokenResponseClient() {
+
+        OAuth2AccessTokenResponseHttpMessageConverter tokenResponseHttpMessageConverter =
+                new OAuth2AccessTokenResponseHttpMessageConverter();
+        tokenResponseHttpMessageConverter.setTokenResponseConverter(new OAuth2AccessTokenResponseConverterWithDefaults());
+
+        RestTemplate restTemplate = new RestTemplate(Arrays.asList(
+                new FormHttpMessageConverter(), tokenResponseHttpMessageConverter));
+        restTemplate.setErrorHandler(new OAuth2ErrorResponseErrorHandler());
+
+        DefaultAuthorizationCodeTokenResponseClient tokenResponseClient = new DefaultAuthorizationCodeTokenResponseClient();
+        tokenResponseClient.setRestOperations(restTemplate);
+
+        return tokenResponseClient;
+
+    }
+
+
 
 }

@@ -5,3 +5,9 @@ services:
     image: nadjim/spring-social
     ports:
       - "8060:8060"
+    labels:
+      - "traefik.backend=spring-social"
+      - "traefik.docker.network=social"
+      - "traefik.enable=true"
+      - "traefik.frontend.rule=Host:api.spring-social.ovh"
+      - "traefik.port=8060"

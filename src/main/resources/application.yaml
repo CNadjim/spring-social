@@ -1,47 +1,6 @@
 spring:
     profiles:
       active: dev
-    security:
-      oauth2:
-        client:
-          registration:
-            github:
-              clientId: Iv1.81e575e54d60298a
-              clientSecret: 35f9a3a5a8cd65adcecf7b814c43988f25cbdc14
-              redirectUriTemplate: "{baseUrl}/oauth2/callback/{registrationId}"
-              scope:
-                - user
-                - user:email
-                - read:user
-            facebook:
-              clientId: 360218771245694
-              clientSecret: 6583919fb824ed6d737791a24e87dbfb
-              redirectUriTemplate: "{baseUrl}/oauth2/callback/{registrationId}"
-              scope:
-                - email
-                - public_profile
-            google:
-              clientId: 983464398033-vgjunh6qcpbs9riprq99u46gjq7kbmcq.apps.googleusercontent.com
-              clientSecret: uVghPcBz66tey9T_2VRF6v0p
-              redirectUriTemplate: "{baseUrl}/oauth2/callback/{registrationId}"
-              scope:
-                - email
-                - profile
-            linkedin:
-              clientId: 77egyay9ytt01b
-              clientSecret: gzOsf5LV44tJNCq0
-              redirectUriTemplate: "{baseUrl}/oauth2/callback/{registrationId}"
-              client-authentication-method: post
-              authorization-grant-type: authorization_code
-              scope: r_liteprofile, r_emailaddress
-              client-name: Linkedin
-          provider:
-            linkedin:
-              authorization-uri: https://www.linkedin.com/oauth/v2/authorization
-              token-uri: https://www.linkedin.com/oauth/v2/accessToken
-              user-info-uri: https://api.linkedin.com/v2/me
-              user-name-attribute: id
-
 app:
   auth:
     tokenSecret: 926D96C90030DD58429D2751AC1BDBBC
@@ -52,4 +11,4 @@ app:
     # we'll be generating an auth token for the user and sending the token to the
     # redirectUri mentioned by the frontend client in the /oauth2/authorize request.
     # We're not using cookies because they won't work well in mobile clients.
-    authorizedRedirectUris: http://localhost:4200/auth/login,http://bettorleague.ovh:8070/auth/login,myandroidapp://oauth2/redirect,myiosapp://oauth2/redirect
+    authorizedRedirectUris: http://localhost:4200/auth/login,https://web.spring-social.ovh/auth/login,myandroidapp://oauth2/redirect,myiosapp://oauth2/redirect
